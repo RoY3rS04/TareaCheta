@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,16 +33,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('home/create-item', function() {
-    return view('home.pages.create-item');
-});
+Route::resource('main', MainController::class);
 
-Route::get('home/explore', function () {
-    return view('home.pages.explore');
-});
+Route::resource('categories', CategoryController::class);
 
-Route::get('home/item', function () {
+Route::resource('collections', CollectionController::class);
+
+Route::get('item-details', function () {
     return view('home.pages.item-details');
 });
+
+Route::resource('items', ItemController::class);
+
+Route::resource('users', UserController::class);
 
 require __DIR__.'/auth.php';

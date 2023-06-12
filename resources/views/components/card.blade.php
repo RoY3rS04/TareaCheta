@@ -8,7 +8,8 @@
     'authorP' => 'Owned By',
     'priceP' => 'Current Bid',
     'home' =>'no',
-    'buttons' => true
+    'buttons' => true,
+    'detail'
 ])
 
 @php
@@ -48,7 +49,7 @@ if($buttons){
         </div>
         @if($home == 'no')
             <div>
-                <h2 class="text-[#8A8AA0] ml-1 text-[13px]">Current Bid</h2>
+                <h2 class="text-[#8A8AA0] ml-1 text-[13px]">{{$priceP}}</h2>
                 <p class="font-bold text-white text-[18px]">{{ $price }} ETH</p>
             </div>
         @elseif($home == 'yes')
@@ -59,6 +60,12 @@ if($buttons){
         <div class="bg-[#14141F] h-[1px] w-full mt-[19px]"></div>
     @endif
     <div class="w-full flex justify-between mt-[16px]">
+        @if(!$buttons && isset($detail))
+            <div>
+                <h2 class="text-[#8A8AA0] ml-1 text-[13px]">{{ $priceP }}</h2>
+                <p class="font-bold text-white text-[18px]">{{ $price }} ETH <span class="text-[#8A8AA0] text-[13px]">= $ {{ $price*2 }}</span></p>
+            </div>
+        @endif
         @if($home == 'no' && $buttons)
             <button class="py-3 px-7 flex gap-x-2 items-center text-white font-bold border-[1px] border-[#5142FC] rounded-[30px]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">

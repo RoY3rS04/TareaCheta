@@ -12,6 +12,11 @@ class Collection extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'user_id'
+    ];
+
     function items(): HasMany {
         return $this->hasMany(Item::class);
     }

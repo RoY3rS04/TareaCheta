@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Collection;
 use App\Models\Item;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ItemController extends Controller
@@ -22,7 +25,8 @@ class ItemController extends Controller
      */
     public function create(): View
     {
-        return view('home.pages.create-item');
+        $collections = Collection::all();
+        return view('home.pages.create-item', ['collections' => $collections]);
     }
 
     /**
@@ -30,9 +34,24 @@ class ItemController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-
+        $data = $request->validate([
+            'title' => ['required', 'min:5'],
+            'description' => ['required', 'min:20'],
+            'price' => 'required',
+            'method' => 'required',
+            'royalties' => ['required', 'min:2'],
+            'size' => ['required', 'min:2'],
+            'collection_id' => 'required',
+            'item_img' => 'required'
         ]);
+
+        $data['user_id'] = Auth::user()->id;
+
+        $item = Item::query()->create($data);
+
+        $item->addMediaFromRequest('item_img')->toMediaCollection('items_images');
+
+        return back();
     }
 
     /**
@@ -40,7 +59,15 @@ class ItemController extends Controller
      */
     public function show(Item $item): View
     {
-        return \view('home.pages.item-details');
+//        $otherItems = Item::query()->whereHas('user', function($query) use ($item) {
+//            $query->where('id', '=', $item->user->id);
+//        })->where('id', '!=', $item->id)
+//            ->with(['media','likes'])->get();
+        $otherItems = $item->user->items
+            ->where('id', '!=', $item->id)
+            ->load(['likes', 'media']);
+
+        return \view('home.pages.item-details', ['item' => $item], ['otherItems' => $otherItems]);
     }
 
     /**

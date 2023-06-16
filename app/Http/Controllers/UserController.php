@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -33,9 +36,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user): View
     {
-        //
+        $categories = Category::all();
+        return \view('home.pages.author', ['author' => $user, 'categories' => $categories]);
     }
 
     /**

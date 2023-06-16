@@ -2,15 +2,14 @@
     'author' => '',
     'name' => '',
     'likes' => 0,
+    'collectionImages'
 ])
 
-<article class="flex flex-col gap-y-[15px] p-5 bg-[#343444] w-[450px] h-[395px] rounded-[10px]">
+<article class="flex flex-col gap-y-[15px] p-5 bg-[#343444] w-[450px] rounded-[10px]">
     <div class="grid grid-cols-6 gap-[10px]">
-        <div class="bg-[#7A798A] col-span-3 h-[131px] rounded-[10px]"><img src="" alt="" class="w-full object-center object-cover"></div>
-        <div class="bg-[#7A798A] col-span-3 h-[131px] rounded-[10px]"><img src="" alt="" class="w-full object-center object-cover"></div>
-        <div class="bg-[#7A798A] col-span-2 h-[131px] rounded-[10px]"><img src="" alt="" class="w-full object-center object-cover"></div>
-        <div class="bg-[#7A798A] col-span-2 h-[131px] rounded-[10px]"><img src="" alt="" class="w-full object-center object-cover"></div>
-        <div class="bg-[#7A798A] col-span-2 h-[131px] rounded-[10px]"><img src="" alt="" class="w-full object-center object-cover"></div>
+        @foreach($collectionImages as $img)
+            <div class="bg-[#7A798A] col-span-3 h-[131px] rounded-[10px] overflow-hidden"><img src="{{$img->getFirstMediaUrl('items_images')}}" alt="" class="w-full h-full object-cover object-center"></div>
+        @endforeach
     </div>
     <div class="flex items-center justify-between">
         <div class="flex gap-x-2.5 items-center">

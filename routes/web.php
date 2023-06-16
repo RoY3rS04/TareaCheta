@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,13 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home.index');
+    $collections = \App\Models\Collection::query()->has('items', '>=', 1)
+        ->with(['items.media', 'likes', 'user'])
+        ->get();
+
+    $items = \App\Models\Item::query()->with(['user', 'collection', 'likes', 'media'])->get();
+
+    return view('home.index', ['items' => $items, 'collections' => $collections]);
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -38,10 +45,6 @@ Route::resource('main', MainController::class);
 Route::resource('categories', CategoryController::class);
 
 Route::resource('collections', CollectionController::class);
-
-Route::get('item-details', function () {
-    return view('home.pages.item-details');
-});
 
 Route::resource('items', ItemController::class);
 

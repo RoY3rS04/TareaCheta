@@ -42,6 +42,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->addMediaFromDisk('default-user-image.png', 'public')
+            ->preservingOriginal()
+            ->toMediaCollection('user_images');
+
         event(new Registered($user));
 
         Auth::login($user);

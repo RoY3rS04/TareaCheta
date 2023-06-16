@@ -4,15 +4,19 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -49,15 +53,19 @@ class User extends Authenticatable
         return $this->hasMany(Item::class);
     }
 
-    public function collections():HasMany{
+    function collections(): HasMany {
         return $this->hasMany(Collection::class);
     }
 
-    public function followers(): BelongsToMany {
-        return $this->belongsToMany(static::class, 'followers', 'followed_id', 'follower_id');
+    public function likes():HasMany {
+        return $this->hasMany(Like::class);
     }
 
-    public function followed(): BelongsToMany {
-        return $this->belongsToMany(static::class, 'followers', 'follower_id', 'followed_id');
+    public function followers(): BelongsToMany {
+        return $this->belongsToMany(static::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    public function following(): BelongsToMany {
+        return $this->belongsToMany(static::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
     }
 }

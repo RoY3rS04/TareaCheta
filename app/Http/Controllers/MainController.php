@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Collection;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -12,7 +15,10 @@ class MainController extends Controller
      */
     public function index():View
     {
-        return view('home.pages.explore');
+        $items = Item::query()->with(['user', 'collection', 'category', 'media'])->get();
+        $collections = Collection::all();
+        $categories = Category::all();
+        return view('home.pages.explore', ['categories' => $categories, 'collections' => $collections, 'items' => $items]);
     }
 
     /**

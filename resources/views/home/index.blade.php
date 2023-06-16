@@ -81,7 +81,7 @@
                             <path d="M20.9521 13.7637H16.8961C15.2041 13.7637 13.8481 15.1329 13.8481 16.8369V20.9276C13.8481 22.6196 15.2041 23.9996 16.8961 23.9996H20.9521C22.6321 23.9996 24.0001 22.6196 24.0001 20.9276V16.8369C24.0001 15.1329 22.6321 13.7637 20.9521 13.7637Z" fill="white"/>
                         </svg>
                     </div>
-                    <h2 class="text-[24px] text-white font-bold mt-[24px]">Create Your Collection</h2>
+                    <a href="{{ action([\App\Http\Controllers\CollectionController::class, 'create']) }}" class="text-[24px] text-white font-bold mt-[24px]">Create Your Collection</a>
                     <p class="text-white text-[14px] mt-[10px] text-center">Click Create and set up your collection. Add social links, a description, profile & banner images, and set a secondary sales fee.</p>
                 </div>
                 <div class="flex flex-col items-center">
@@ -113,9 +113,11 @@
             <a href="" class="text-white font-bold uppercase border-b-[1px] border-[#E250E5] text-[14px]">Explore More</a>
         </div>
         <div class="flex items-center gap-x-[30px]">
-            <x-collection/>
-            <x-collection/>
-            <x-collection/>
+            @foreach($collections as $collection)
+                <x-collection
+                    author="{{$collection->user->name}}" name="{{$collection->name}}" :collectionImages="$collection->items"
+                />
+            @endforeach
         </div>
     </section>
     <section class="px-[255px] py-[80px] flex flex-col gap-y-10 bg-[#14141f]">
@@ -136,14 +138,16 @@
     <section class="px-[255px] py-[80px] flex flex-col gap-y-10 bg-[#14141f]">
         <h1 class="text-white text-[36px] font-bold">Today's Picks</h1>
         <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] grid-flow-row gap-y-10 gap-x-[30px]">
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
-            <x-card home="yes"></x-card>
+            @foreach($items as $item)
+                    <x-card home="yes"
+                            item_name="{{$item->title}}"
+                            author_image="{{$item->user->getFirstMediaUrl('user_images')}}"
+                            price="{{$item->price}}"
+                            item_image="{{ $item->getFirstMediaUrl('items_images')}}"
+                            :item="$item"
+                            :author="$item->user"
+                    ></x-card>
+            @endforeach
         </div>
         <x-primary-button class="mx-auto px-10">
             Load More

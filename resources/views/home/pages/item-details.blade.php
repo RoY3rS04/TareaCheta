@@ -3,11 +3,11 @@
     <x-slot name="subpage">Pages</x-slot>
     <x-slot name="sub_subpage">Item Details</x-slot>
     <main class="bg-[#14141f] py-[80px] px-[255px] grid grid-cols-2 gap-x-[100px] gap-y-[80px]">
-        <div class="w-[690px] h-[690px] bg-[#7A798A] rounded-[10px]">
-            <img class="w-full object-center object-cover" src="" alt="Item Image">
+        <div class="w-[690px] h-[690px] bg-[#7A798A] rounded-[10px] overflow-hidden">
+            <img class="w-full h-full object-center object-cover" src="{{$item->getFirstMediaUrl('items_images')}}" alt="Item Image">
         </div>
         <section class="flex flex-col gap-y-4">
-            <h1 class="text-white font-bold text-[36px]">"Hello world aljfakljf"</h1>
+            <h1 class="text-white font-bold text-[36px]">"{{$item->title}}"</h1>
             <div class="flex flex-col gap-y-6">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-x-3">
@@ -50,16 +50,16 @@
                         <div class="w-[44px] h-[44px] rounded-[15px] bg-[#C4C4C4]"></div>
                         <div>
                             <p class="text-[13px] text-[#8A8AA0] pb-[2px]">Created By</p>
-                            <h3 class="text-white font-bold text-[15px]">Royers</h3>
+                            <h3 class="text-white font-bold text-[15px]">{{$item->user->name}}</h3>
                         </div>
                     </div>
                 </div>
             </div>
-            <p class="text-white text-[14px]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium architecto consequatur cumque dicta itaque, laboriosam libero neque, nulla numquam qui quis quod sint tempore, voluptatibus. Accusantium asperiores quis reprehenderit!</p>
+            <p class="text-white text-[14px]">{{$item->description}}</p>
             <div class="py-3 px-6 bg-[#343444] flex items-center justify-between text-[#EBEBEB] font-medium rounded-[10px] w-[295px] h-[50px]">
                 Price
                 <div class="font-bold text-white flex items-center gap-x-[7px]">
-                    4.89 ETH
+                    {{$item->price}} ETH
                     <p class="text-[13px] text-[#EBEBEB] font-normal">= $13.34</p>
                 </div>
             </div>
@@ -70,10 +70,19 @@
                 <a href="" class="text-white font-bold uppercase border-b-[1px] border-[#E250E5] text-[14px]">Explore More</a>
             </div>
             <div class="flex items-center gap-x-[30px] overflow-hidden">
-                <x-card authorP="Creator" home="no"  :buttons="false"></x-card>
-                <x-card authorP="Creator" home="no"  :buttons="false"></x-card>
-                <x-card authorP="Creator" home="no" :buttons="false"></x-card>
-                <x-card authorP="Creator" home="no"  :buttons="false"></x-card>
+                @foreach($otherItems as $authorItem)
+                    <x-card
+                        authorP="Creator"
+                        home="no"
+                        :buttons="false"
+                        :item="$authorItem"
+                        :author="$authorItem->user"
+                        item_name="{{$authorItem->title}}"
+                        price="{{$authorItem->price}}"
+                        item_image="{{ $authorItem->getFirstMediaUrl('items_images')}}"
+                    >
+                    </x-card>
+                @endforeach
             </div>
         </div>
     </main>

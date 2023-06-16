@@ -1,7 +1,8 @@
 @props([
     'likes' => 0,
     'item_name' => '',
-    'author' => '',
+    'author',
+    'item',
     'price' => 0,
     'item_image' => '',
     'author_image' => '',
@@ -9,7 +10,7 @@
     'priceP' => 'Current Bid',
     'home' =>'no',
     'buttons' => true,
-    'detail'
+    'detail',
 ])
 
 @php
@@ -18,39 +19,46 @@ if($buttons){
 } else {
     $height= '442px';
 }
- @endphp
+@endphp
 
 <article class="w-[330px] h-[{{$height}}] flex flex-col items-center bg-[#343444] rounded-[20px] p-[20px]">
-    <div class="bg-[#7A798A] relative w-[290px] h-[290px] rounded-[20px]">
+    <div class="bg-[#7A798A] relative w-[290px] h-[290px] rounded-[20px] overflow-hidden">
         <div class="absolute w-[64px] h-[28px] bg-[#14141F] rounded-[10px] top-[14px] right-[12px] flex justify-center items-center gap-x-[5px] text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
                 <path d="M14.7145 1.64672C12.9744 -0.092941 10.1436 -0.092941 8.40393 1.64672L7.99986 2.05055L7.59603 1.64672C5.85637 -0.0931764 3.02531 -0.0931764 1.28565 1.64672C-0.418689 3.35105 -0.429756 6.05261 1.25998 7.93096C2.80114 9.64354 7.34643 13.3435 7.53928 13.5001C7.6702 13.6065 7.82773 13.6583 7.98432 13.6583C7.9895 13.6583 7.99468 13.6583 7.99963 13.6581C8.16163 13.6656 8.32481 13.61 8.45997 13.5001C8.65282 13.3435 13.1986 9.64354 14.7402 7.93072C16.4297 6.05261 16.4186 3.35105 14.7145 1.64672ZM13.69 6.98578C12.4884 8.32066 9.18546 11.0738 7.99963 12.0508C6.8138 11.074 3.51155 8.32114 2.31018 6.98602C1.13142 5.67586 1.12035 3.80999 2.28452 2.64582C2.87908 2.05149 3.6599 1.75409 4.44072 1.75409C5.22154 1.75409 6.00236 2.05126 6.59693 2.64582L7.48512 3.53401C7.59085 3.63974 7.72412 3.70285 7.86399 3.72498C8.09099 3.77372 8.33729 3.71038 8.51389 3.53425L9.40256 2.64582C10.5919 1.45693 12.5266 1.45716 13.7152 2.64582C14.8794 3.80999 14.8683 5.67586 13.69 6.98578Z" fill="white"/>
             </svg>
             {{ $likes }}
         </div>
+        @if(isset($item) && isset($author))
+            <a href="{{ action([\App\Http\Controllers\ItemController::class, 'show'], ['item' => $item]) ?? '#'}}">
+                <img id="pictureShow" class="w-full h-full object-center object-cover" src="{{$item_image}}" alt="Item image">
+            </a>
+        @endif
     </div>
     @if($home == 'no')
         <div class="flex justify-between w-full mt-[21px] mb-[17px]">
-            <h1 class="text-white font-bold">"{{ $item_name }}"</h1>
+            <h1 id="titleShow" class="text-white font-bold">"{{ $item_name }}"</h1>
             <button class="text-white font-bold rounded-[10px] bg-[#5142FC] py-0.5 px-3">BSC</button>
         </div>
     @else
-        <h1 class="text-white font-bold mt-[21px] mb-[17px]">"{{ $item_name }}"</h1>
+        <h1 id="titleShow" class="text-white font-bold mt-[21px] mb-[17px]">"{{ $item_name }}"</h1>
     @endif
     <div class="flex justify-between w-full">
         <div class="flex gap-x-3">
             <div class="w-[44px] h-[44px] rounded-[15px] bg-[#7A798A]">
-                <img src="{{ $author_image }}" alt="Author image">
+                <img src="{{ $author_image }}" class="object-center object-cover w-full" alt="Author image">
             </div>
             <div class="flex flex-col gap-y-0.5">
                 <h2 class="text-[#8A8AA0] text-[13px]">{{ $authorP }}</h2>
-                <p class="font-bold text-white text-[15px]">{{ $author }}</p>
+                @if(isset($item) && isset($author))
+                    <a href="{{ action([\App\Http\Controllers\UserController::class, 'show'], ['user' => $author]) ?? '#'}}" class="font-bold text-white text-[15px]">{{ $author->name }}</a>
+                @endif
             </div>
         </div>
         @if($home == 'no')
             <div>
                 <h2 class="text-[#8A8AA0] ml-1 text-[13px]">{{$priceP}}</h2>
-                <p class="font-bold text-white text-[18px]">{{ $price }} ETH</p>
+                <p id="priceShow" class="font-bold text-white text-[18px]">{{ $price }} ETH</p>
             </div>
         @elseif($home == 'yes')
             <button class="text-white font-bold rounded-[10px] text-[12px] bg-[#5142FC] py-0.5 px-3">BSC</button>
@@ -63,7 +71,7 @@ if($buttons){
         @if(!$buttons && isset($detail))
             <div>
                 <h2 class="text-[#8A8AA0] ml-1 text-[13px]">{{ $priceP }}</h2>
-                <p class="font-bold text-white text-[18px]">{{ $price }} ETH <span class="text-[#8A8AA0] text-[13px]">= $ {{ $price*2 }}</span></p>
+                <p id="priceShow" class="font-bold text-white text-[18px]">{{ $price }} ETH <span class="text-[#8A8AA0] text-[13px]">= $ {{ $price*2 }}</span></p>
             </div>
         @endif
         @if($home == 'no' && $buttons)
@@ -76,7 +84,7 @@ if($buttons){
         @elseif($home == 'yes')
             <div>
                 <h2 class="text-[#8A8AA0] ml-1 text-[13px]">{{ $priceP }}</h2>
-                <p class="font-bold text-white text-[18px]">{{ $price }} ETH @if($home)<span class="text-[#8A8AA0] text-[13px]">= $ {{ $price*2 }}</span></p>
+                <p id="priceShow" class="font-bold text-white text-[18px]">{{ $price }} ETH @if($home)<span class="text-[#8A8AA0] text-[13px]">= $ {{ $price*2 }}</span></p>
                 @endif
             </div>
         @endif

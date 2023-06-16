@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('royalties');
             $table->string('size');
             $table->string('method');
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('collection_id')->references('id')->on('collections');
-            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('collection_id')->references('id')->on('collections')->cascadeOnDelete();
             $table->timestamps();
         });
     }

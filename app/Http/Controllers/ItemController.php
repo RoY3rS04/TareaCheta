@@ -47,6 +47,10 @@ class ItemController extends Controller
 
         $data['user_id'] = Auth::user()->id;
 
+        if(!Auth::user()->is_author) {
+            Auth::user()->update(['is_author'], [true]);
+        }
+
         $item = Item::query()->create($data);
 
         $item->addMediaFromRequest('item_img')->toMediaCollection('items_images');

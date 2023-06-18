@@ -11,7 +11,9 @@
     <main class="px-[255px] py-[80px] flex gap-x-[80px] bg-[#14141F]">
         <aside class="flex flex-col gap-y-5">
             <h2 class="text-white font-bold text-[20px]">Preview Item</h2>
-            <x-card>
+            <x-card :author_image="\Illuminate\Support\Facades\Auth::user()->getFirstMediaUrl('user_images')"
+                :author="\Illuminate\Support\Facades\Auth::user()"
+            >
 
             </x-card>
         </aside>

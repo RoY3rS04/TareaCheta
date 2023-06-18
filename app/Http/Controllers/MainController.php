@@ -15,7 +15,7 @@ class MainController extends Controller
      */
     public function index():View
     {
-        $items = Item::query()->with(['user', 'collection', 'category', 'media'])->get();
+        $items = Item::query()->with(['user', 'collection', 'category', 'media', 'likes'])->get();
         $collections = Collection::all();
         $categories = Category::all();
         return view('home.pages.explore', ['categories' => $categories, 'collections' => $collections, 'items' => $items]);

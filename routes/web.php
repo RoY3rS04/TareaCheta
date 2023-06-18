@@ -50,4 +50,6 @@ Route::resource('items', ItemController::class);
 
 Route::resource('users', UserController::class);
 
+Route::post('/home', [\App\Http\Controllers\LikeController::class, 'store']);
+
 require __DIR__.'/auth.php';

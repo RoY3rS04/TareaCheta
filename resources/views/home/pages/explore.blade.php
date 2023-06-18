@@ -46,12 +46,13 @@
                     authorP="Creator"
                     priceP="Price"
                     item_name="{{$item->title}}"
-                    author="{{$item->user->name}}"
                     price="{{$item->price}}"
                     item_image="{{ $item->getFirstMediaUrl('items_images')}}"
                     :item="$item"
                     :author="$item->user"
+                    :author_image="$item->user->getFirstMediaUrl('user_images')"
                     detail="y"
+                    :likes="$item->likes->count()"
                 ></x-card>
             @endforeach
             <x-primary-button class="col-start-2">

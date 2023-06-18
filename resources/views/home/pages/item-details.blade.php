@@ -27,7 +27,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
                                 <path d="M14.7145 1.64672C12.9744 -0.092941 10.1436 -0.092941 8.40393 1.64672L7.99986 2.05055L7.59603 1.64672C5.85637 -0.0931764 3.02531 -0.0931764 1.28565 1.64672C-0.418689 3.35105 -0.429756 6.05261 1.25998 7.93096C2.80114 9.64354 7.34643 13.3435 7.53928 13.5001C7.6702 13.6065 7.82773 13.6583 7.98432 13.6583C7.9895 13.6583 7.99468 13.6583 7.99963 13.6581C8.16163 13.6656 8.32481 13.61 8.45997 13.5001C8.65282 13.3435 13.1986 9.64354 14.7402 7.93072C16.4297 6.05261 16.4186 3.35105 14.7145 1.64672ZM13.69 6.98578C12.4884 8.32066 9.18546 11.0738 7.99963 12.0508C6.8138 11.074 3.51155 8.32114 2.31018 6.98602C1.13142 5.67586 1.12035 3.80999 2.28452 2.64582C2.87908 2.05149 3.6599 1.75409 4.44072 1.75409C5.22154 1.75409 6.00236 2.05126 6.59693 2.64582L7.48512 3.53401C7.59085 3.63974 7.72412 3.70285 7.86399 3.72498C8.09099 3.77372 8.33729 3.71038 8.51389 3.53425L9.40256 2.64582C10.5919 1.45693 12.5266 1.45716 13.7152 2.64582C14.8794 3.80999 14.8683 5.67586 13.69 6.98578Z" fill="white"/>
                             </svg>
-                            100
+                            {{$item->likes->count()}}
                         </div>
                     </div>
                     <div class="flex items-center gap-x-3">
@@ -47,7 +47,9 @@
                 </div>
                 <div class="text-white">
                     <div class="flex gap-x-3 items-center rounded-[16px] w-[295px] p-3 bg-[#343444] h-[68px]">
-                        <div class="w-[44px] h-[44px] rounded-[15px] bg-[#C4C4C4]"></div>
+                        <div class="w-[44px] h-[44px] rounded-[15px] bg-[#C4C4C4]">
+                            <img class="w-full object-cover object-center" src="{{$item->user->getFirstMediaUrl('user_images')}}" alt="User image">
+                        </div>
                         <div>
                             <p class="text-[13px] text-[#8A8AA0] pb-[2px]">Created By</p>
                             <h3 class="text-white font-bold text-[15px]">{{$item->user->name}}</h3>
@@ -69,20 +71,60 @@
                 <h2 class="text-white text-[36px] font-bold">More From This Author</h2>
                 <a href="" class="text-white font-bold uppercase border-b-[1px] border-[#E250E5] text-[14px]">Explore More</a>
             </div>
-            <div class="flex items-center gap-x-[30px] overflow-hidden">
-                @foreach($otherItems as $authorItem)
-                    <x-card
-                        authorP="Creator"
-                        home="no"
-                        :buttons="false"
-                        :item="$authorItem"
-                        :author="$authorItem->user"
-                        item_name="{{$authorItem->title}}"
-                        price="{{$authorItem->price}}"
-                        item_image="{{ $authorItem->getFirstMediaUrl('items_images')}}"
-                    >
-                    </x-card>
-                @endforeach
+            <div>
+                <div class="overflow-hidden h-[458px]">
+                    <div class="flex gap-x-[30px] overflow-x-scroll">
+                        @foreach($otherItems as $authorItem)
+                            <x-card
+                                authorP="Creator"
+                                home="no"
+                                :buttons="false"
+                                :item="$authorItem"
+                                :author="$authorItem->user"
+                                :author_image="$authorItem->user->getFirstMediaUrl('user_images')"
+                                item_name="{{$authorItem->title}}"
+                                price="{{$authorItem->price}}"
+                                item_image="{{ $authorItem->getFirstMediaUrl('items_images')}}"
+                                :likes="$authorItem->likes->count()"
+                            >
+                            </x-card>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="h-[15px] mt-[42px] gap-x-[22px] items-center flex justify-center">
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.6667 7H1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.83333 12.8337L1 7.00033L6.83333 1.16699" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class=" flex gap-x-4 items-center">
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                        </svg>
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                        </svg>
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                        </svg>
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                        </svg>
+                    </div>
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 7H12.6667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.83301 1.16699L12.6663 7.00033L6.83301 12.8337" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
             </div>
         </div>
     </main>

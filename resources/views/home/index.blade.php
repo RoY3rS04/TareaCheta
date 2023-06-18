@@ -107,6 +107,58 @@
             </div>
         </div>
     </x-slot>
+    <section class="bg-[#14141f]">
+        <h1 class="text-white text-[36px] px-[255px] mb-10 font-bold">New Posts</h1>
+        <div class="overflow-hidden h-[518px]">
+            <div class="flex gap-x-[30px] overflow-x-scroll">
+                @foreach($items as $item)
+                    <x-card home="yes"
+                            item_name="{{$item->title}}"
+                            author_image="{{$item->user->getFirstMediaUrl('user_images')}}"
+                            price="{{$item->price}}"
+                            item_image="{{ $item->getFirstMediaUrl('items_images')}}"
+                            :item="$item"
+                            :author="$item->user"
+                            :likes="$item->likes->count()"
+                    ></x-card>
+                @endforeach
+            </div>
+        </div>
+        <div class="h-[15px] mt-[42px] gap-x-[22px] items-center flex justify-center">
+            <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.6667 7H1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.83333 12.8337L1 7.00033L6.83333 1.16699" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class=" flex gap-x-4 items-center">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                </svg>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                </svg>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                </svg>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="3.5" stroke="white"/>
+                </svg>
+            </div>
+            <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 7H12.6667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.83301 1.16699L12.6663 7.00033L6.83301 12.8337" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </section>
     <section class="px-[255px] py-[80px] bg-[#14141f] flex flex-col gap-y-[38px]">
         <div class="flex justify-between items-center">
             <h1 class="text-white text-[36px] font-bold">Popular Collection</h1>
@@ -115,7 +167,9 @@
         <div class="flex items-center gap-x-[30px]">
             @foreach($collections as $collection)
                 <x-collection
-                    author="{{$collection->user->name}}" name="{{$collection->name}}" :collectionImages="$collection->items"
+                    :author="$collection->user" name="{{$collection->name}}" :collectionImages="$collection->items"
+                    :collection="$collection"
+                    :likes="$collection->likes->count()"
                 />
             @endforeach
         </div>
@@ -136,7 +190,7 @@
         </div>
     </section>
     <section class="px-[255px] py-[80px] flex flex-col gap-y-10 bg-[#14141f]">
-        <h1 class="text-white text-[36px] font-bold">Today's Picks</h1>
+        <h1 class="text-white pick text-[36px] font-bold">Today's Picks</h1>
         <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] grid-flow-row gap-y-10 gap-x-[30px]">
             @foreach($items as $item)
                     <x-card home="yes"
@@ -146,6 +200,7 @@
                             item_image="{{ $item->getFirstMediaUrl('items_images')}}"
                             :item="$item"
                             :author="$item->user"
+                            :likes="$item->likes->count()"
                     ></x-card>
             @endforeach
         </div>
@@ -153,4 +208,7 @@
             Load More
         </x-primary-button>
     </section>
+    @push('scripts')
+        <script src="../../js/bootstrap.js"></script>
+    @endpush
 </x-app-layout>

@@ -73,6 +73,14 @@
                             @endforeach
                         </select>
                     </x-input-label>
+                    <x-input-label class="flex flex-1 flex-col gap-y-5" value="Category">
+                        <select name="category_id"
+                                class="text-[#8A8AA0] border-[#343444] border-[1px] bg-transparent rounded-[8px] font-medium shadow-sm">
+                            @foreach($categories as $category)
+                                <option class="text-inherit bg-transparent" value="{{$category->id}}">{{$category->name}}</option>
+                            @endforeach
+                        </select>
+                    </x-input-label>
                 </div>
                 <x-primary-button class="px-10">Create Item</x-primary-button>
             </div>
@@ -107,5 +115,4 @@
             }
         </script>
     @endpush
-
 </x-app-layout>

@@ -22,7 +22,8 @@ class Item extends Model implements HasMedia
         'size',
         'method',
         'user_id',
-        'collection_id'
+        'collection_id',
+        'category_id'
     ];
 
     function user(): BelongsTo {

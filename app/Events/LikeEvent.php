@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Models\Item;
 use App\Models\Like;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -19,7 +21,7 @@ class LikeEvent implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public Like $like,
+        public mixed $likeable
     )
     {
 

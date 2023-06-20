@@ -3,7 +3,7 @@
     'user_image' => ''
 ])
 
-<div class=" @if($type == 'top') w-[100px] h-[100px] @else w-[64px] h-[64px] @endif  rounded-[20px] bg-[#7A798A] relative">
+<div class=" @if($type == 'top') min-w-[100px] h-[100px] @else w-[64px] h-[64px] @endif  rounded-[20px] bg-[#7A798A] relative">
     <img src="{{$user_image}}" alt="User Image" class="w-full object-cover object-center h-full absolute">
     <div class="@if($type == 'top') w-[26px] h-[26px] @else w-[18px] h-[18px] @endif rounded-full flex items-center justify-center absolute bottom-0 right-0 bg-[#5142FC]">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">

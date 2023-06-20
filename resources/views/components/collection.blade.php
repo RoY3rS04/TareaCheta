@@ -20,7 +20,7 @@
                 <p class="text-[13px] text-[#8A8AA0]">Created By <span class="text-white font-bold text-[15px]">{{ $author->name }}</span></p>
             </div>
         </div>
-        <form action="{{ action([\App\Http\Controllers\LikeController::class, 'store']) }}"
+        <form action=""
               method="POST">
             @csrf
             <input type="hidden" value="{{\App\Models\Collection::class}}" name="likeable_type">

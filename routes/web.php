@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -29,9 +30,10 @@ Route::get('/home', function () {
         ->with(['items.media', 'likes', 'user'])
         ->get();
 
+    $users = \App\Models\User::all();
     $items = \App\Models\Item::query()->with(['user', 'collection', 'likes', 'media'])->get();
 
-    return view('home.index', ['items' => $items, 'collections' => $collections]);
+    return view('home.index', ['items' => $items, 'collections' => $collections, 'users' => $users]);
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -50,6 +52,6 @@ Route::resource('items', ItemController::class);
 
 Route::resource('users', UserController::class);
 
-Route::post('/home', [\App\Http\Controllers\LikeController::class, 'store']);
+Route::post('/home/{item}', [LikeController::class, 'store']);
 
 require __DIR__.'/auth.php';

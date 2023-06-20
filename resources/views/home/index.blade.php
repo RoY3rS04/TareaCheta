@@ -1,3 +1,7 @@
+@php
+$totalPrice = 0;
+ @endphp
+
 <x-app-layout home="yes">
     <x-slot name="user">
         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -120,6 +124,7 @@
                             :item="$item"
                             :author="$item->user"
                             :likes="$item->likes->count()"
+                            id="like_{{$item->id}}"
                     ></x-card>
                 @endforeach
             </div>
@@ -177,16 +182,13 @@
     <section class="px-[255px] py-[80px] flex flex-col gap-y-10 bg-[#14141f]">
         <h1 class="text-white text-[36px] font-bold">Top Sellers</h1>
         <div class="grid grid-cols-5 gap-y-7 gap-x-[68px]">
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
-            <x-top-seller></x-top-seller>
+            @foreach($users as $user)
+                <x-top-seller
+                    :user_image="$user->getFirstMediaUrl('user_images')"
+                    :name="$user->name"
+                    :total="$user->where('id', $user->id)->withSum('items','price')->get()->first()->toArray()['items_sum_price']"
+                />
+            @endforeach
         </div>
     </section>
     <section class="px-[255px] py-[80px] flex flex-col gap-y-10 bg-[#14141f]">

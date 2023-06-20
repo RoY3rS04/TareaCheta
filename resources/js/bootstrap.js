@@ -30,3 +30,9 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     enabledTransports: ['ws', 'wss'],
 });
+
+var channel = window.Echo.channel('likes-channel');
+
+channel.listen('like-event', function (data) {
+    console.log(JSON.stringify(data.likeable));
+})

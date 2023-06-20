@@ -21,6 +21,6 @@ class UpdateActualLikes
      */
     public function handle(LikeEvent $event)
     {
-        return $event->like;
+        return $event->likeable;
     }
 }

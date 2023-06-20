@@ -55,7 +55,7 @@
                     :likes="$item->likes->count()"
                 ></x-card>
             @endforeach
-            <x-primary-button class="col-start-2">
+            <x-primary-button class="col-start-1 col-end-4">
                 Load More
             </x-primary-button>
         </section>

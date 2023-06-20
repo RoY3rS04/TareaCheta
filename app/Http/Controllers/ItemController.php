@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Item;
 use Illuminate\Database\Query\Builder;
@@ -26,7 +27,8 @@ class ItemController extends Controller
     public function create(): View
     {
         $collections = Collection::all();
-        return view('home.pages.create-item', ['collections' => $collections]);
+        $categories = Category::all();
+        return view('home.pages.create-item', ['collections' => $collections, 'categories' => $categories]);
     }
 
     /**
@@ -42,13 +44,14 @@ class ItemController extends Controller
             'royalties' => ['required', 'min:2'],
             'size' => ['required', 'min:2'],
             'collection_id' => 'required',
+            'category_id' => 'required',
             'item_img' => 'required'
         ]);
 
         $data['user_id'] = Auth::user()->id;
 
         if(!Auth::user()->is_author) {
-            Auth::user()->update(['is_author'], [true]);
+            Auth::user()->update(['is_author' => true]);
         }
 
         $item = Item::query()->create($data);

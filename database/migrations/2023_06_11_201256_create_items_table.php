@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('method');
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('collection_id')->references('id')->on('collections')->cascadeOnDelete();
+            $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete();
             $table->timestamps();
         });
     }
